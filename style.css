@@ -1,0 +1,207 @@
+*,*::after, *::before {
+    box-sizing: border-box; /*styling in all*/
+}
+
+:root{
+--cell-size:100px;
+--mark-size:calc(var(--cell-size)*.9);/*calculate the size to be 90% of cell size*/
+--mainColor:rgb(189, 189, 189);
+--secondaryColor:purple;
+}
+
+body{
+    margin: 0;
+    padding-top:10vh;
+    display:grid;
+    justify-content: center;
+    background-color:var(--mainColor);
+    
+
+    
+    
+}
+.game-title{
+
+    color:var(--mainColor);
+    display: flex;
+    justify-content: center;
+    padding: 0px;
+    font-size: 2rem;
+   
+    
+}
+.game-title p{
+    box-shadow: -27px -19px 14px 0px rgba(0,0,0,0.26);
+    -webkit-box-shadow: -27px -19px 14px 0px rgba(0,0,0,0.26);
+    -moz-box-shadow: -27px -19px 14px 0px rgba(0,0,0,0.26);
+    background-color:var(--secondaryColor);
+    opacity:0.9;
+    border-radius: 10px;
+    padding:5px;
+}
+.board{
+    box-shadow: -27px -19px 14px 0px rgba(0,0,0,0.26);
+    -webkit-box-shadow: -27px -19px 14px 0px rgba(0,0,0,0.26);
+    -moz-box-shadow: -27px -19px 14px 0px rgba(0,0,0,0.26);
+
+    width:auto;
+    height:auto;
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    grid-template-columns: repeat(3,auto);
+    background-color:var(--secondaryColor);
+    opacity: 0.9;
+    border-radius: 5px;
+    
+
+    /*for the item(mark) inside the cell*/
+    justify-items: center;
+    align-items: center;
+
+}
+
+.cell{
+    width:var(--cell-size);
+    height:var(--cell-size);
+    border:1px solid black;
+
+    /*inside a cell*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position:relative;
+
+    cursor:pointer;
+
+
+}
+.cell:first-child,
+.cell:nth-child(2),
+.cell:nth-child(3){
+    border-top:none;
+    /*remove upper border in the first 3 cells*/
+}
+
+.cell:nth-child(3n + 1){/*all left cells*/
+    border-left: none;
+}
+
+.cell:nth-child(3n + 3){/*all right cells*/
+    border-right: none;
+}
+
+.cell:last-child,
+.cell:nth-child(8),
+.cell:nth-child(7){
+    border-bottom:none;
+}
+
+
+
+/*--------------------------------mark---------------------------*/
+.cell.x::before,
+.cell.x::after,
+.cell.o::before{
+    background-color: black;
+}
+
+/*-----X------*/
+.cell.x::before,
+.cell.x::after,/*Front and back*/
+.board.x .cell:not(.x):not(.o):hover::before,/*over affect only if not in x or o cells*/
+.board.x .cell:not(.x):not(.o):hover::after{/*hover cell also use the same shape*/
+    content:'';
+    position: absolute;/*same base for position*/
+    width:calc(var(--mark-size)*.15);
+    height: var(--mark-size);
+    
+}
+
+.cell.x::before,
+.board.x .cell:not(.x):not(.o):hover::before{
+    transform: rotate(45deg);
+
+}
+
+.cell.x::after,
+.board.x .cell:not(.x):not(.o):hover::after{
+    transform: rotate(-45deg);
+    
+}
+
+
+/*-----O-----*/
+.cell.o::before,
+.cell.o::after,
+.board.o .cell:not(.x):not(.o):hover::before,
+.board.o .cell:not(.x):not(.o):hover::after{
+    content:'';
+    position: absolute;/*same base for position*/
+    border-radius: 50%;
+    
+    
+}
+
+.cell.o::before,
+.board.o .cell:not(.x):not(.o):hover::before{
+    width:var(--mark-size);
+    height: var(--mark-size);
+    
+}
+
+.cell.o::after,
+.board.o .cell:not(.x):not(.o):hover::after{
+    width:calc(var(--mark-size)*.7);
+    height:calc(var(--mark-size)*.7);
+    background-color: purple;
+
+}
+/*hover color change*/
+.board.x .cell:not(.x):not(.o):hover::before,
+.board.x .cell:not(.x):not(.o):hover::after,
+.board.o .cell:not(.x):not(.o):hover::before{
+    background-color: black;
+    opacity: 0.5;
+}
+.cell.x,
+.cell.o{
+    cursor:not-allowed;
+}
+
+/*---------------------winning message pop up------------------------*/
+.winning-message{
+
+    display:none;/*hide the winning-message*/
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom:0px;
+    left:0px;
+    background-color: rgba(0,0,0,.9);
+    justify-content: center;
+    align-items: center;
+    color: var(--mainColor);
+    font-size: 5rem;
+    flex-direction: column;
+}
+
+.winning-message button{
+    font-size: 3rem;
+    background-color:var(--mainColor);
+    border:1px solid var(--secondaryColor);
+    color:var(--secondaryColor);
+    padding: .2em .5em;
+    cursor:pointer;
+}
+
+.winning-message button:hover{
+    background-color: var(--secondaryColor);
+    color:var(--mainColor);
+    border-color: var(--mainColor);
+}
+
+.winning-message.show{
+    display:flex;
+}
+
